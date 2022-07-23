@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  min-width: 320px;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #0b2434;
+  display: grid;
+  place-content: center;
+  font-family: "Karla", sans-serif;
+}
+
+p {
+  font-family: "Inter", sans-serif;
+}
