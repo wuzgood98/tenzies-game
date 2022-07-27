@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Die from './component/Die'
 import Confetti from 'react-confetti'
 import { nanoid } from 'nanoid'
+import { RollDice, NewGame } from './component/Buttons'
 
 function App() {
 
@@ -36,11 +37,8 @@ function App() {
     return () => clearInterval(interval)
   }, [start, tenzies])
 
-  const startGame = () => {
-    setStart(true)
-    //setBtnEnabled(true)
-    /* add disabled button */
-  }
+
+
 
   const date = {
     minutes: ('0' + Math.floor((time / 60000) % 60)).slice(-2),
@@ -99,21 +97,22 @@ function App() {
 
   const resetTime = () => setTime(0)
 
+  const newGame = () => {
+    setTenzies(false)
+    setDice(allNewDice())
+    resetTime()
+    resetRollCount()
+    setStart(true)
+  }
+
   function rollDice() {
-    if (!tenzies) {
-      setDice(oldDice =>
-        oldDice.map(die => {
-          return die.isHeld ?
-            die :
-            generateNewDie()
-        }))
-      incrementRollCount()
-    } else {
-      setTenzies(false)
-      setDice(allNewDice())
-      resetTime()
-      resetRollCount()
-    }
+    setDice(oldDice =>
+      oldDice.map(die => {
+        return die.isHeld ?
+          die :
+          generateNewDie()
+      }))
+    incrementRollCount()
   }
 
   const dieElements = dice.map(die => (
@@ -131,14 +130,8 @@ function App() {
       <h4 className='font-bold text-[1.3rem] text-[#2B283A]'></h4>
       <h2 className="absolute flex text-2xl top-2 left-2 font-bold text-white">Rolls: {rollCount}</h2>
       <h1 className="absolute flex text-lg top-12 left-2 font-bold text-white">
-        Best Time: {bestTime.minutes}:{bestTime.seconds}
+        Best Time: {!bestTime.minutes ? '00' : bestTime.minutes}:{!bestTime.seconds ? '00' : bestTime.seconds}
       </h1>
-      <button
-        onClick={startGame}
-        className='absolute top-2 right-2 bg-[#5035FF] text-white font-bold min-w-max h-[2.24rem] px-3 capitalize rounded active:scale-95 transition-all text-[16.38px] drop-shadow-l'
-      >
-        <i className="fa-solid fa-play"></i>
-      </button>
       <h1 className="absolute flex text-2xl top-2 font-bold text-white">
         <span>{date.minutes}</span>:
         <span>{date.seconds}</span>
@@ -150,7 +143,7 @@ function App() {
       <section className="w-full grid grid-cols-5 grid-rows-2 gap-y-5 place-items-center mb-8">
         {dieElements}
       </section>
-      <button onClick={rollDice} className='bg-[#5035FF] text-white font-bold w-[5.76rem] min-w-max h-[2.24rem] px-3 capitalize rounded active:scale-95 transition-all text-[16.38px] drop-shadow-lg'>{tenzies ? 'new game' : 'roll'}</button>
+      {!start ? <NewGame newGame={newGame} /> : <RollDice rollDice={rollDice} />}
     </main>
   )
 }
