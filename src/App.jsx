@@ -130,7 +130,7 @@ function App() {
       <h4 className='font-bold text-[1.3rem] text-[#2B283A]'></h4>
       <h2 className="absolute flex text-2xl top-2 left-2 font-bold text-white">Rolls: {rollCount}</h2>
       <h1 className="absolute flex text-lg top-12 left-2 font-bold text-white">
-        Best Time: {!bestTime.minutes ? '00' : bestTime.minutes}:{!bestTime.seconds ? '00' : bestTime.seconds}
+        Best Time: {bestTime.minutes || '00'}:{bestTime.seconds || '00'}
       </h1>
       <h1 className="absolute flex text-2xl top-2 font-bold text-white">
         <span>{date.minutes}</span>:
